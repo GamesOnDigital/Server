@@ -14,30 +14,34 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<RecipesDbContext>(options => options.UseSqlServer("Server=.;Database=RecipesDB;TrustServerCertificate=True;Trusted_Connection=True;"));
+builder.Services.AddDbContext<CountdContext>(options => options.UseSqlServer("Server=.;Database=countd;TrustServerCertificate=True;Trusted_Connection=True;"));
 
 builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddScoped(typeof(ICategoryDal), typeof(CategoryDal));
-builder.Services.AddScoped(typeof(ICategoryBll), typeof(CategoryBll));
+builder.Services.AddScoped(typeof(IAudienceDal), typeof(AudienceDal));
+builder.Services.AddScoped(typeof(IAudienceBll), typeof(AudienceBll));
 
-builder.Services.AddScoped(typeof(ICommentsToRecipeDal), typeof(CommentsToRecipeDal));
-builder.Services.AddScoped(typeof(ICommentsToRecipeBll), typeof(CommentsToRecipeBll));
+builder.Services.AddScoped(typeof(IGameDal), typeof(GameDal));
+builder.Services.AddScoped(typeof(IGameBll), typeof(GameBll));
 
-builder.Services.AddScoped(typeof(IIngredientDal), typeof(IngredientDal));
-builder.Services.AddScoped(typeof(IIngredientBll), typeof(IngredientBll));
+builder.Services.AddScoped(typeof(IGenderDal), typeof(GenderDal));
+builder.Services.AddScoped(typeof(IGenderBll), typeof(GenderBll));
 
-builder.Services.AddScoped(typeof(IIngredientsToRecipeDal), typeof(IngredientsToRecipeDal));
-builder.Services.AddScoped(typeof(IIngredientsToRecipeBll), typeof(IngredientsToRecipeBll));
+builder.Services.AddScoped(typeof(IHowKnownDal), typeof(HowKnownDal));
+builder.Services.AddScoped(typeof(IHowKnownBll), typeof(HowKnownBll));
 
-builder.Services.AddScoped(typeof(ILevelDal), typeof(LevelDal));
-builder.Services.AddScoped(typeof(ILevelBll), typeof(LevelBll));
+builder.Services.AddScoped(typeof(ISettingDal), typeof(SettingDal));
+builder.Services.AddScoped(typeof(ISettingsBll), typeof(SettingsBll));
 
-builder.Services.AddScoped(typeof(IRecipeDal), typeof(RecipeDal));
-builder.Services.AddScoped(typeof(IRecipeBll), typeof(RecipeBll));
+builder.Services.AddScoped(typeof(ITypeGameDal), typeof(TypeGameDal));
+builder.Services.AddScoped(typeof(ITypeGameBll), typeof(TypeGameBll));
 
 builder.Services.AddScoped(typeof(IUserDal), typeof(UserDal));
 builder.Services.AddScoped(typeof(IUserBll), typeof(UserBll));
+
+builder.Services.AddScoped(typeof(IUserDetailDal), typeof(UserDetailDal));
+builder.Services.AddScoped(typeof(IUserDetailsBll), typeof(UserDetailsBll));
+
 
 builder.Services.AddCors(options =>
 {
@@ -66,7 +70,7 @@ app.UseCors(builder =>
     .AllowAnyOrigin()
     .AllowAnyHeader()
     .AllowAnyMethod();
-;
+    ;
 });
 
 app.UseHttpsRedirection();

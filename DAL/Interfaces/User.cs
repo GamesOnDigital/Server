@@ -6,7 +6,14 @@ namespace DAL.Interfaces;
 
 public interface IUserDal
 {
-   User Register(User user);
-   User Login(string email, string password);
+    Task<User> SignIn(User user);
 
+    Task<User> Login(string email, string password);
+
+    Task<List<User>> GetAll();
+    Task<User> Update(User gender);
+
+    Task<bool> Delete(int id);
+
+    Task<User> GetById(int id);
 }
