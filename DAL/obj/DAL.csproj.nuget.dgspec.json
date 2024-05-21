@@ -1,24 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\This User\\Desktop\\פרויקט ספירת הגומר\\code\\server\\DAL\\DAL.csproj": {}
+    "C:\\Users\\אפרת ורדי\\Desktop\\פרוייקטים\\ספירת הגומר\\Server\\DAL\\DAL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\This User\\Desktop\\פרויקט ספירת הגומר\\code\\server\\DAL\\DAL.csproj": {
+    "C:\\Users\\אפרת ורדי\\Desktop\\פרוייקטים\\ספירת הגומר\\Server\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\This User\\Desktop\\פרויקט ספירת הגומר\\code\\server\\DAL\\DAL.csproj",
+        "projectUniqueName": "C:\\Users\\אפרת ורדי\\Desktop\\פרוייקטים\\ספירת הגומר\\Server\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "C:\\Users\\This User\\Desktop\\פרויקט ספירת הגומר\\code\\server\\DAL\\DAL.csproj",
-        "packagesPath": "C:\\Users\\This User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\This User\\Desktop\\פרויקט ספירת הגומר\\code\\server\\DAL\\obj\\",
+        "projectPath": "C:\\Users\\אפרת ורדי\\Desktop\\פרוייקטים\\ספירת הגומר\\Server\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\אפרת ורדי\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\אפרת ורדי\\Desktop\\פרוייקטים\\ספירת הגומר\\Server\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\This User\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\אפרת ורדי\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,12 +25,10 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
+          "net70": {
             "projectReferences": {}
           }
         },
@@ -39,16 +36,10 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net70": {
           "dependencies": {
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
@@ -61,23 +52,7 @@
               "version": "[7.0.9, )"
             }
           },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
         }
       }
     }
