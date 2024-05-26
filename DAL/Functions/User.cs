@@ -3,6 +3,7 @@ using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using BCrypt.Net;
 
 namespace DAL.Functions;
 
@@ -40,23 +41,53 @@ public partial class UserDal : IUserDal
         throw new NotImplementedException();
     }
 
-    public Task<User> Login(string email, string password)
+    public async Task<User> Login(string email, string password)
     {
-        throw new NotImplementedException();
+        try
+        {
+            User newU = await db.Users.FirstOrDefaultAsync(u => u.Email.Equals(email));
+            if (newU != null)
+            {
+                if (!BCrypt.Net.BCrypt.Verify(password,newU.Password))
+                    throw new Exception("סיסמא לא נכונה");
+                else return newU;
+            }
+            else throw new Exception("מייל לא נכון");                                  
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("error--",ex);
+        }
+        {
+        }
     }
 
-    public Task<User> SignIn(User user)
+    public async Task<User> SignIn(User user)
     {
-        //Recipe newRecipe = db.Recipes.FirstOrDefault(r => r.Name == recipe.Name && r.UserId == recipe.UserId && r.CategoryId == recipe.CategoryId && r.LevelId == recipe.LevelId);
-        //if (newRecipe != null)
-        //{
-        //    return newRecipe.Id;
-        //}
-        //else
-        //{
-        //    return -1;
-        //}
-        throw new NotImplementedException();
+
+        try
+        {
+            if (db.Users.FirstOrDefault(u => u.Email.Equals(user.Email)) != null)
+                throw new Exception("אמייל קיים במערכת", null);
+            else if (db.Users.FirstOrDefault(u => u.Password.Equals(user.Password)) != null)
+                throw new Exception("סיסמא לא תקינה", null);
+            else
+            {
+                string encodingPassword= BCrypt.Net.BCrypt.HashPassword(user.Password);
+                user.Password= encodingPassword;
+                await db.Users.AddAsync(user);
+                db.SaveChangesAsync();
+                return user;
+            }
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new ApplicationException("An error occurred while saving data to the database. Please try again later.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("error-", ex);
+        }
     }
 
     public Task<User> Update(User gender)
@@ -64,23 +95,10 @@ public partial class UserDal : IUserDal
         throw new NotImplementedException();
     }
 
-    //public User Add(User user)
-    //{
-    //    try
-    //    {
-    //        var a = db.Users.Add(user);
-    //        db.SaveChanges();
-    //        return user;
-    //    }
-    //    catch
-    //    {
-    //        return null;
-    //    }
-    //}
 
 
 
-   
+
 
 
 

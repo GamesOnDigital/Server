@@ -1,6 +1,9 @@
 ﻿using BLL.Interfaces;
+using DAL.Models;
 using DTO.Classes;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts.PatternContextLinear;
+using User = DTO.Classes.User;
 
 namespace WebApi.Controllers
 {
@@ -8,20 +11,26 @@ namespace WebApi.Controllers
     [ApiController]
     public class UserController : Controller
     {
-
-
+        private readonly JwtTokenGenerator JwtTokenGenerator;
         private readonly IUserBll _Users;
 
-        public UserController(IUserBll Users)
+        public UserController(IUserBll Users, JwtTokenGenerator jwtTokenGenerator)
         {
             _Users = Users;
+            this.JwtTokenGenerator = jwtTokenGenerator;
         }
 
         [HttpPost]
-        public async Task<User> SignIn(User User)
+        public async Task<IActionResult> SignIn(User User1)
         {
 
-            return await _Users.SignIn(User); ;
+            User user =await _Users.SignIn(User1);
+            if (user != null)
+            {
+                var token = JwtTokenGenerator.GenerateToken(user.Email + '#' + user.FirstName);
+                return Ok(new { token = token, user = user });
+            }
+            return Unauthorized();
         }
 
         [HttpPut("{id}")]
@@ -37,10 +46,16 @@ namespace WebApi.Controllers
             return await _Users.Delete(id);
         }
 
-        [HttpGet("{id}")]
-        public async Task<User> Login(string email, string password)
-        {
-            return await _Users.Login(email, password);
+        [HttpGet("Login")]
+        public async Task<IActionResult> Login([FromQuery]string email, [FromQuery] string password)
+        {            
+            var user = await _Users.Login(email, password);
+            if (user != null)
+            {
+                var token = JwtTokenGenerator.GenerateToken(user.Email+'#'+user.FirstName);
+                return Ok(new { token = token, user= user });
+            }
+            return Unauthorized();
         }
 
         [HttpGet()]

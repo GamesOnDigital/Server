@@ -52,7 +52,7 @@ namespace BLL.Functions
 
         }
 
-        public async Task<Audience> Update(int id, Audience audience)
+        public  Task<Audience> Update(int id, Audience audience)
         {
             throw new NotImplementedException();
             //DAL.Models.Audience a = mapper.Map<Audience, DAL.Models.Audience>(audience);

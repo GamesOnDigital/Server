@@ -9,5 +9,5 @@ public partial class HowKnown
 
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<UserDetail> UserDetails { get; set; } = new List<UserDetail>();
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

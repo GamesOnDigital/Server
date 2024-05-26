@@ -23,7 +23,7 @@ public partial class Game
 
     public virtual Audience? Audience { get; set; }
 
-    public virtual UserDetail Details { get; set; } = null!;
+    public virtual User Details { get; set; } = null!;
 
     public virtual Setting Settings { get; set; } = null!;
 

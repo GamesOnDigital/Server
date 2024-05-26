@@ -19,7 +19,7 @@ public partial class GameDal : IGameDal
         try
         {
             await db.Games.AddAsync(game);
-            await db.SaveChangesAsync();
+             db.SaveChangesAsync();
             return game;
         }
         catch (DbUpdateException ex)
@@ -77,7 +77,10 @@ public partial class GameDal : IGameDal
     {
         try
         {
-            return await db.Games.FirstOrDefaultAsync(g => g.Id == id);
+            Game g = await db.Games.FirstOrDefaultAsync(g => g.Id == id);
+            if (g != null)
+                return g;
+            else throw new Exception("לא נמצא אוביקט");
         }
         catch (Exception ex)
         {

@@ -29,17 +29,14 @@ public partial class CountdContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    public virtual DbSet<UserDetail> UserDetails { get; set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=ayala-vardi;Initial Catalog=countd; Trusted_Connection=True;MultipleActiveResultSets=True;Encrypt=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Audience>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Audience__3213E83F2AF62BDA");
+            entity.HasKey(e => e.Id).HasName("PK__Audience__3213E83F035C71D3");
 
             entity.ToTable("Audience");
 
@@ -51,7 +48,7 @@ public partial class CountdContext : DbContext
 
         modelBuilder.Entity<Game>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__games__3213E83F12971A48");
+            entity.HasKey(e => e.Id).HasName("PK__games__3213E83FCCF50F40");
 
             entity.ToTable("games");
 
@@ -73,27 +70,27 @@ public partial class CountdContext : DbContext
 
             entity.HasOne(d => d.Audience).WithMany(p => p.Games)
                 .HasForeignKey(d => d.AudienceId)
-                .HasConstraintName("FK__games__audienceI__4AB81AF0");
+                .HasConstraintName("FK__games__audienceI__4BAC3F29");
 
             entity.HasOne(d => d.Details).WithMany(p => p.Games)
                 .HasForeignKey(d => d.DetailsId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__games__detailsId__48CFD27E");
+                .HasConstraintName("FK__games__detailsId__49C3F6B7");
 
             entity.HasOne(d => d.Settings).WithMany(p => p.Games)
                 .HasForeignKey(d => d.SettingsId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__games__settingsI__49C3F6B7");
+                .HasConstraintName("FK__games__settingsI__4AB81AF0");
 
             entity.HasOne(d => d.TypeGame).WithMany(p => p.Games)
                 .HasForeignKey(d => d.TypeGameId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__games__typeGameI__47DBAE45");
+                .HasConstraintName("FK__games__typeGameI__48CFD27E");
         });
 
         modelBuilder.Entity<Gender>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__gender__3213E83F1808CFD1");
+            entity.HasKey(e => e.Id).HasName("PK__gender__3213E83F1CA28130");
 
             entity.ToTable("gender");
 
@@ -105,7 +102,7 @@ public partial class CountdContext : DbContext
 
         modelBuilder.Entity<HowKnown>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__howKnown__3213E83FDE567F30");
+            entity.HasKey(e => e.Id).HasName("PK__howKnown__3213E83F7AAE336A");
 
             entity.ToTable("howKnown");
 
@@ -117,7 +114,7 @@ public partial class CountdContext : DbContext
 
         modelBuilder.Entity<Setting>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__settings__3213E83FB1AD7831");
+            entity.HasKey(e => e.Id).HasName("PK__settings__3213E83FB7668DC6");
 
             entity.ToTable("settings");
 
@@ -138,7 +135,7 @@ public partial class CountdContext : DbContext
 
         modelBuilder.Entity<TypeGame>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__typeGame__3213E83FD430EDF7");
+            entity.HasKey(e => e.Id).HasName("PK__typeGame__3213E83F3087EE5A");
 
             entity.ToTable("typeGame");
 
@@ -157,34 +154,15 @@ public partial class CountdContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__users__3213E83FF7417FDD");
+            entity.HasKey(e => e.Id).HasName("PK__users__3213E83F380107B2");
 
             entity.ToTable("users");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.DetailsId).HasColumnName("detailsId");
+            entity.Property(e => e.City).HasColumnName("city");
             entity.Property(e => e.Email)
                 .HasMaxLength(50)
                 .HasColumnName("email");
-            entity.Property(e => e.Password)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("password");
-
-            entity.HasOne(d => d.Details).WithMany(p => p.Users)
-                .HasForeignKey(d => d.DetailsId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__users__detailsId__4316F928");
-        });
-
-        modelBuilder.Entity<UserDetail>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__userDeta__3213E83FE37B8526");
-
-            entity.ToTable("userDetails");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.City).HasColumnName("city");
             entity.Property(e => e.FirstName)
                 .HasMaxLength(20)
                 .HasColumnName("firstName");
@@ -193,17 +171,21 @@ public partial class CountdContext : DbContext
             entity.Property(e => e.LastName)
                 .HasMaxLength(20)
                 .HasColumnName("lastName");
+            entity.Property(e => e.Password)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("password");
             entity.Property(e => e.PhoneNumber)
                 .HasMaxLength(10)
                 .HasColumnName("phoneNumber");
 
-            entity.HasOne(d => d.Gender).WithMany(p => p.UserDetails)
+            entity.HasOne(d => d.Gender).WithMany(p => p.Users)
                 .HasForeignKey(d => d.GenderId)
-                .HasConstraintName("FK__userDetai__gende__3F466844");
+                .HasConstraintName("FK__users__genderId__3F466844");
 
-            entity.HasOne(d => d.HowKnown).WithMany(p => p.UserDetails)
+            entity.HasOne(d => d.HowKnown).WithMany(p => p.Users)
                 .HasForeignKey(d => d.HowKnownId)
-                .HasConstraintName("FK__userDetai__howKn__403A8C7D");
+                .HasConstraintName("FK__users__howKnownI__403A8C7D");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -3,16 +3,73 @@ using BLL.Interfaces;
 using DAL.Functions;
 using DAL.Interfaces;
 using DAL.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// הגדרת מפתח סודי ארוך יותר
+string secretKey = "this_is_a_very_long_secret_key_for_jwt"; // לפחות 32 תווים
+
+builder.Services.AddSingleton(new JwtTokenGenerator(
+    key: secretKey,
+    issuer: "yourdomain.com",
+    audience: "yourdomain.com"));
+
+// הגדרת אימות JWT
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "yourdomain.com",
+        ValidAudience = "yourdomain.com",
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+    };
+});
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+    // הוספת הגדרת Authorization ל-Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    });
+});
 
 builder.Services.AddDbContext<CountdContext>(options => options.UseSqlServer("Server=.;Database=countd;TrustServerCertificate=True;Trusted_Connection=True;"));
 
@@ -39,10 +96,6 @@ builder.Services.AddScoped(typeof(ITypeGameBll), typeof(TypeGameBll));
 builder.Services.AddScoped(typeof(IUserDal), typeof(UserDal));
 builder.Services.AddScoped(typeof(IUserBll), typeof(UserBll));
 
-builder.Services.AddScoped(typeof(IUserDetailDal), typeof(UserDetailDal));
-builder.Services.AddScoped(typeof(IUserDetailsBll), typeof(UserDetailsBll));
-
-
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
@@ -55,14 +108,16 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseRouting();
 
 app.UseCors(builder =>
 {
@@ -70,12 +125,18 @@ app.UseCors(builder =>
     .AllowAnyOrigin()
     .AllowAnyHeader()
     .AllowAnyMethod();
-    ;
 });
 
 app.UseHttpsRedirection();
 
+
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.MapControllers();
 

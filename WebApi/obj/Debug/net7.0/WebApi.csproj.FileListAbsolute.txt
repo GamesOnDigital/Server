@@ -318,3 +318,5 @@ C:\Users\This User\Desktop\פרויקט ספירת הגומר\code\server\WebApi
 C:\Users\This User\Desktop\פרויקט ספירת הגומר\code\server\WebApi\obj\Debug\net7.0\WebApi.genruntimeconfig.cache
 C:\Users\This User\Desktop\פרויקט ספירת הגומר\code\server\WebApi\obj\Debug\net7.0\ref\WebApi.dll
 C:\Users\This User\Desktop\פרויקט ספירת הגומר\code\server\WebApi\obj\Debug\net7.0\WebApi.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\This User\Desktop\פרויקט ספירת הגומר\code\server\WebApi\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\This User\Desktop\פרויקט ספירת הגומר\code\server\WebApi\bin\Debug\net7.0\BCrypt.Net-Next.dll

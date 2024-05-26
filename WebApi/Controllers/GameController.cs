@@ -1,38 +1,44 @@
 ﻿using BLL.Interfaces;
 using DTO.Classes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
-{ 
-    [Route("api/[controller]")]
+{
+    [Authorize]
     [ApiController]
+    [Route("api/[controller]")]
     public class GameController : Controller
     {
-       
+
         private readonly IGameBll _game;
 
-        public GameController(IGameBll _game)
+        public GameController(IGameBll game)
         {
-            _game = _game;
+            _game = game;
         }
 
+        //[Authorize]
         [HttpPost]
-        public async Task< Game> Add(Game game)
+        public async Task<Game> Add(Game game)
         {
-            
-            return await _game.Add(game);;
+
+            if (game == null)
+               throw new ArgumentNullException(nameof(game));
+            Game game1 = await _game.Add(game);
+            return game1;
         }
 
         [HttpPut("{id}")]
         public async Task<Game> Update(Game updatedGame)
         {
             return await _game.Update(updatedGame);
-            
+
         }
 
         [HttpDelete("{id}")]
         public async Task<bool> Delete(int id)
-        {         
+        {
             return await _game.Delete(id);
         }
 
@@ -49,5 +55,5 @@ namespace WebApi.Controllers
         }
     }
 
-    }
+}
 

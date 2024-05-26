@@ -10,13 +10,21 @@ namespace DTO.Classes
     {
         public int Id { get; set; }
 
-        public string Name { get; set; } = null!;
+        public string Email { get; set; } = null!;
 
         public string Password { get; set; } = null!;
 
-        public string Email { get; set; } = null!;
+        public string PhoneNumber { get; set; } = null!;
 
-        public int DetailsId { get; set; }
+        public string FirstName { get; set; } = null!;
+
+        public string? LastName { get; set; }
+
+        public int? GenderId { get; set; }
+
+        public int? City { get; set; }
+
+        public int? HowKnownId { get; set; }
 
     }
 }
